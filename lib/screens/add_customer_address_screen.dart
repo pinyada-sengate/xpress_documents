@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../data/data.dart';
-import 'add_customer_address_screen.dart';
+import '../models/customer.dart';
+import 'add_customer_case_screen.dart';
 
-class AddCustomerScreen extends StatefulWidget {
-  const AddCustomerScreen({ Key? key }) : super(key: key);
+class AddCustomerAddressScreen extends StatefulWidget {
+  final Customer customer;
+
+  const AddCustomerAddressScreen({ Key? key, required this.customer }) : super(key: key);
 
   @override
-  State<AddCustomerScreen> createState() => _AddCustomerScreenState();
+  State<AddCustomerAddressScreen> createState() => _AddCustomerAddressScreenState();
 }
 
-class _AddCustomerScreenState extends State<AddCustomerScreen> {
+class _AddCustomerAddressScreenState extends State<AddCustomerAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +26,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Text(
-              'Personal',
+              'Address',
               style: TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.bold,
@@ -42,9 +45,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Name',
+                hintText: 'Address',
                 prefixIcon: Icon(
-                  Icons.person_outline,
+                  Icons.home,
                   size: 30.0,
                 ),
               ),
@@ -62,9 +65,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Surname',
+                hintText: 'City',
                 prefixIcon: Icon(
-                  Icons.person_outline,
+                  Icons.location_city_outlined,
                   size: 30.0,
                 ),
               ),
@@ -82,9 +85,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Telephone Number',
+                hintText: 'State',
                 prefixIcon: Icon(
-                  Icons.phone,
+                  Icons.location_city_outlined,
                   size: 30.0,
                 ),
               ),
@@ -102,9 +105,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Email',
+                hintText: 'Zipcode',
                 prefixIcon: Icon(
-                  Icons.email_outlined,
+                  Icons.local_shipping_outlined,
                   size: 30.0,
                 ),
               ),
@@ -118,7 +121,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddCustomerAddressScreen(
+                    MaterialPageRoute(builder: (context) => AddCustomerCaseScreen(
                       customer: currentUser.customers[0],
                     )),
                   );

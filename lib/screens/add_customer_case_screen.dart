@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../data/data.dart';
-import 'add_customer_address_screen.dart';
+import '../models/customer.dart';
 
-class AddCustomerScreen extends StatefulWidget {
-  const AddCustomerScreen({ Key? key }) : super(key: key);
+class AddCustomerCaseScreen extends StatefulWidget {
+
+  final Customer customer;
+
+  const AddCustomerCaseScreen({ Key? key, required this.customer }) : super(key: key);
 
   @override
-  State<AddCustomerScreen> createState() => _AddCustomerScreenState();
+  State<AddCustomerCaseScreen> createState() => _AddCustomerCaseScreenState();
 }
 
-class _AddCustomerScreenState extends State<AddCustomerScreen> {
+class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Text(
-              'Personal',
+              'Case Information',
               style: TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.bold,
@@ -42,9 +44,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Name',
+                hintText: 'Type of case',
                 prefixIcon: Icon(
-                  Icons.person_outline,
+                  Icons.gavel,
                   size: 30.0,
                 ),
               ),
@@ -62,9 +64,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Surname',
+                hintText: 'Total Price',
                 prefixIcon: Icon(
-                  Icons.person_outline,
+                  Icons.attach_money,
                   size: 30.0,
                 ),
               ),
@@ -82,29 +84,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                     width: 0.8,
                   ),
                 ),
-                hintText: 'Telephone Number',
+                hintText: 'Down Payment',
                 prefixIcon: Icon(
-                  Icons.phone,
-                  size: 30.0,
-                ),
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 15.0),
-                fillColor: Colors.white,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    width: 0.8,
-                  ),
-                ),
-                hintText: 'Email',
-                prefixIcon: Icon(
-                  Icons.email_outlined,
+                  Icons.account_balance_wallet,
                   size: 30.0,
                 ),
               ),
@@ -116,12 +98,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddCustomerAddressScreen(
-                      customer: currentUser.customers[0],
-                    )),
-                  );
+                  //TODO: save to database
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
@@ -132,7 +109,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                   ),
                 ),
                 child: const Text(
-                  'Next',
+                  'Save',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
