@@ -2,71 +2,82 @@ import 'package:flutter/material.dart';
 
 import '../data/data.dart';
 import '../models/customer.dart';
+import '../screens/customer_screen.dart';
 
 class RecentCustomers extends StatelessWidget {
   const RecentCustomers({ Key? key }) : super(key: key);
 
   _buildRecentCustomer(BuildContext context, Customer customer) {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      width: 320.0,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15.0),
-        border: Border.all(
-          width: 1.0, 
-          color: Colors.grey.shade200,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CustomerScreen(
+            customer: customer,
           ),
+        ),
       ),
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15.0),
-            child: Image(
-              height: 100.0,
-              width: 100.0,
-              image: AssetImage(customer.imageUrl),
-              fit: BoxFit.cover,
+      child: Container(
+        margin: const EdgeInsets.all(10.0),
+        width: 320.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15.0),
+          border: Border.all(
+            width: 1.0, 
+            color: Colors.grey.shade200,
             ),
-          ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(12.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '${customer.name} ${customer.surname}',
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4.0,),
-                  Text(
-                    'Paid: \$${customer.paid.toString()}',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4.0,),
-                  Text(
-                    'Next Payment: \$' + (customer.price - customer.paid).toString(),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+        ),
+        child: Row(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: Image(
+                height: 100.0,
+                width: 100.0,
+                image: AssetImage(customer.imageUrl),
+                fit: BoxFit.cover,
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '${customer.name} ${customer.surname}',
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4.0,),
+                    Text(
+                      'Paid: \$${customer.paid.toString()}',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4.0,),
+                    Text(
+                      'Next Payment: \$' + (customer.price - customer.paid).toString(),
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
