@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "208639792531",
+    "project_id": "xpress-documents",
+    "storage_bucket": "xpress-documents.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208639792531:android:a75f8ad7a4cea06bdc0466",
+        "android_client_info": {
+          "package_name": "com.pinyadapizza.xpress_documents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208639792531-au7i27gor5n1cu0ab4emisnhote90jq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcW6QwhTEOQWHgVg5I6zz-w2bTcigbE2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208639792531-au7i27gor5n1cu0ab4emisnhote90jq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

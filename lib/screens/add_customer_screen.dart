@@ -1,16 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../data/data.dart';
+import '../models/customer.dart';
 import 'add_customer_address_screen.dart';
 
 class AddCustomerScreen extends StatefulWidget {
-  const AddCustomerScreen({ Key? key }) : super(key: key);
+  const AddCustomerScreen({Key? key}) : super(key: key);
 
   @override
   State<AddCustomerScreen> createState() => _AddCustomerScreenState();
 }
 
 class _AddCustomerScreenState extends State<AddCustomerScreen> {
+  CollectionReference _customerCollection =
+      FirebaseFirestore.instance.collection('customers');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,25 +116,39 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 120.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 120.0, vertical: 10.0),
             child: SizedBox(
               height: 40,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  // TODO: form validation
+                  Customer customer = currentUser.customers[0];
+                  await _customerCollection.add({
+                    'name': customer.name,
+                    'surname': customer.surname,
+                    'email': customer.email,
+                    'phone_number': customer.phoneNumber,
+                    'address': customer.address,
+                    'city': customer.city,
+                    'state': customer.state,
+                    'zipcode': customer.zipcode,
+                  });
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddCustomerAddressScreen(
-                      customer: currentUser.customers[0],
-                    )),
+                    MaterialPageRoute(
+                        builder: (context) => AddCustomerAddressScreen(
+                              customer: currentUser.customers[0],
+                            )),
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).primaryColor),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    )
-                  ),
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  )),
                 ),
                 child: const Text(
                   'Next',
