@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xpress_documents/models/customer.dart';
 
-import 'add_case_screen.dart';
+import 'add_customer_case_screen.dart';
 import '../mixins/validation_mixin.dart';
 
 class AddCustomerScreen extends StatefulWidget {
@@ -308,52 +308,55 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
   }
 
   Widget submitButton() {
-    return Center(
-      child: SizedBox(
-        height: 40,
-        width: 120,
-        child: ElevatedButton(
-          onPressed: () async {
-            if (formKey.currentState!.validate()) {
-              formKey.currentState!.save();
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Center(
+        child: SizedBox(
+          height: 40,
+          width: 120,
+          child: ElevatedButton(
+            onPressed: () async {
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
 
-              Customer customer = Customer(
-                name: name,
-                surname: surname,
-                phoneNumber: phoneNumber,
-                email: email,
-                address: address,
-                city: city,
-                state: state,
-                zipCode: zipCode,
-              );
+                Customer customer = Customer(
+                  name: name,
+                  surname: surname,
+                  phoneNumber: phoneNumber,
+                  email: email,
+                  address: address,
+                  city: city,
+                  state: state,
+                  zipCode: zipCode,
+                );
 
-              var docRef = await _customerCollection.add(customer.toJson());
-              customer.id = docRef.id;
-              formKey.currentState?.reset();
+                var docRef = await _customerCollection.add(customer.toJson());
+                customer.id = docRef.id;
+                formKey.currentState?.reset();
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AddCaseScreen(
-                          customer: customer,
-                        )),
-              );
-            }
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).primaryColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            )),
-          ),
-          child: const Text(
-            'Save',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddCustomerCaseScreen(
+                            customer: customer,
+                          )),
+                );
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).primaryColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              )),
+            ),
+            child: const Text(
+              'Save',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
             ),
           ),
         ),

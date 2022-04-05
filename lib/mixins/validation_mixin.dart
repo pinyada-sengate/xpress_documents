@@ -60,4 +60,25 @@ class ValidationMixin {
     }
     return null;
   }
+
+  String? validateCaseType(value) {
+    if (value.length == 0) {
+      return 'Please enter type of case';
+    }
+    return null;
+  }
+
+  String? validateTotalPrice(value) {
+    if (value.length == 0) {
+      return 'Total price must be more than 0';
+    }
+    return null;
+  }
+
+  String? validateDownPayment(value) {
+    if (value.length == 0) {
+      return 'Please enter down payment';
+    }
+    return null;
+  }
 }

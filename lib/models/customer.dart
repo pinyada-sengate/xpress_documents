@@ -22,7 +22,7 @@ class Customer {
     this.id,
     required this.name,
     required this.surname,
-    this.imageUrl = '',
+    this.imageUrl = 'assets/images/profile_picture.png',
     required this.phoneNumber,
     required this.email,
     required this.address,
