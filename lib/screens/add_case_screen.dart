@@ -16,7 +16,7 @@ class _AddCaseScreenState extends State<AddCaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Case'),
+        title: const Text('Add New Case'),
         centerTitle: true,
       ),
       body: ListView(

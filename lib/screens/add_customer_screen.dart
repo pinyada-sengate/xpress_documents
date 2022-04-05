@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:xpress_documents/models/customer.dart';
 
-import '../data/data.dart';
 import 'add_case_screen.dart';
 import '../mixins/validation_mixin.dart';
 
@@ -20,7 +20,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
 
   String name = '';
   String surname = '';
-  String telephoneNumber = '';
+  String phoneNumber = '';
   String email = '';
   String address = '';
   String city = '';
@@ -72,7 +72,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                   addressField(),
                   cityField(),
                   stateField(),
-                  zipcodeField(),
+                  zipCodeField(),
                   submitButton(),
                 ],
               ),
@@ -105,7 +105,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateName,
         onSaved: (value) {
-          print('name: $value');
           name = value!;
         },
       ),
@@ -134,7 +133,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateName,
         onSaved: (value) {
-          print('surname: $value');
           surname = value!;
         },
       ),
@@ -163,8 +161,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateTelephoneNumber,
         onSaved: (value) {
-          print('telephone number: $value');
-          telephoneNumber = value!;
+          phoneNumber = value!;
         },
       ),
     );
@@ -192,7 +189,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateEmail,
         onSaved: (value) {
-          print('email: $value');
           email = value!;
         },
       ),
@@ -221,7 +217,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateAddress,
         onSaved: (value) {
-          print('address: $value');
           address = value!;
         },
       ),
@@ -232,6 +227,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextFormField(
+        keyboardType: TextInputType.streetAddress,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -249,7 +245,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateCity,
         onSaved: (value) {
-          print('city: $value');
           city = value!;
         },
       ),
@@ -260,6 +255,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextFormField(
+        keyboardType: TextInputType.streetAddress,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -277,17 +273,17 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateState,
         onSaved: (value) {
-          print('state: $value');
           state = value!;
         },
       ),
     );
   }
 
-  Widget zipcodeField() {
+  Widget zipCodeField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -305,7 +301,6 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
         ),
         validator: validateZipcode,
         onSaved: (value) {
-          print('zip code: $value');
           zipCode = value!;
         },
       ),
@@ -322,22 +317,26 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();
 
-              await _customerCollection.add({
-                'name': name,
-                'surname': surname,
-                'email': email,
-                'phone_number': telephoneNumber,
-                'address': address,
-                'city': city,
-                'state': state,
-                'zip_code': zipCode,
-              });
+              Customer customer = Customer(
+                name: name,
+                surname: surname,
+                phoneNumber: phoneNumber,
+                email: email,
+                address: address,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+              );
+
+              var docRef = await _customerCollection.add(customer.toJson());
+              customer.id = docRef.id;
+              formKey.currentState?.reset();
 
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => AddCaseScreen(
-                          customer: currentUser.customers[0],
+                          customer: customer,
                         )),
               );
             }
