@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../data/data.dart';
-import 'add_customer_address_screen.dart';
+import 'add_case_screen.dart';
 import '../mixins/validation_mixin.dart';
 
 class AddCustomerScreen extends StatefulWidget {
@@ -22,6 +22,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
   String surname = '';
   String telephoneNumber = '';
   String email = '';
+  String address = '';
+  String city = '';
+  String state = '';
+  String zipCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +37,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
       body: ListView(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(20.0),
+            margin: const EdgeInsets.all(20.0),
             child: Form(
               key: formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const Padding(
                     padding:
@@ -53,6 +58,21 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                   surnameField(),
                   telephoneNumberField(),
                   emailField(),
+                  const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    child: Text(
+                      'Address',
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  addressField(),
+                  cityField(),
+                  stateField(),
+                  zipcodeField(),
                   submitButton(),
                 ],
               ),
@@ -154,6 +174,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -178,9 +199,121 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
     );
   }
 
-  Widget submitButton() {
+  Widget addressField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: TextFormField(
+        keyboardType: TextInputType.streetAddress,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 0.8,
+            ),
+          ),
+          hintText: 'Address',
+          prefixIcon: Icon(
+            Icons.home,
+            size: 30.0,
+          ),
+        ),
+        validator: validateAddress,
+        onSaved: (value) {
+          print('address: $value');
+          address = value!;
+        },
+      ),
+    );
+  }
+
+  Widget cityField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 0.8,
+            ),
+          ),
+          hintText: 'City',
+          prefixIcon: Icon(
+            Icons.location_city_outlined,
+            size: 30.0,
+          ),
+        ),
+        validator: validateCity,
+        onSaved: (value) {
+          print('city: $value');
+          city = value!;
+        },
+      ),
+    );
+  }
+
+  Widget stateField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 0.8,
+            ),
+          ),
+          hintText: 'State',
+          prefixIcon: Icon(
+            Icons.location_city_outlined,
+            size: 30.0,
+          ),
+        ),
+        validator: validateState,
+        onSaved: (value) {
+          print('state: $value');
+          state = value!;
+        },
+      ),
+    );
+  }
+
+  Widget zipcodeField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 0.8,
+            ),
+          ),
+          hintText: 'Zip code',
+          prefixIcon: Icon(
+            Icons.local_shipping_outlined,
+            size: 30.0,
+          ),
+        ),
+        validator: validateZipcode,
+        onSaved: (value) {
+          print('zip code: $value');
+          zipCode = value!;
+        },
+      ),
+    );
+  }
+
+  Widget submitButton() {
+    return Center(
       child: SizedBox(
         height: 40,
         width: 120,
@@ -194,16 +327,16 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                 'surname': surname,
                 'email': email,
                 'phone_number': telephoneNumber,
-//                'address': customer.address,
-//                'city': customer.city,
-//                'state': customer.state,
-//                'zipcode': customer.zipcode,
+                'address': address,
+                'city': city,
+                'state': state,
+                'zip_code': zipCode,
               });
 
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddCustomerAddressScreen(
+                    builder: (context) => AddCaseScreen(
                           customer: currentUser.customers[0],
                         )),
               );
@@ -218,7 +351,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
             )),
           ),
           child: const Text(
-            'Next',
+            'Save',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20.0,

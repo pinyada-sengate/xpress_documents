@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../models/customer.dart';
 
-class AddCustomerCaseScreen extends StatefulWidget {
-
+class AddCaseScreen extends StatefulWidget {
   final Customer customer;
 
-  const AddCustomerCaseScreen({ Key? key, required this.customer }) : super(key: key);
+  const AddCaseScreen({Key? key, required this.customer}) : super(key: key);
 
   @override
-  State<AddCustomerCaseScreen> createState() => _AddCustomerCaseScreenState();
+  State<AddCaseScreen> createState() => _AddCaseScreenState();
 }
 
-class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen> {
+class _AddCaseScreenState extends State<AddCaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Customer'),
+        title: const Text('Add Case'),
         centerTitle: true,
       ),
       body: ListView(
@@ -93,7 +92,8 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 120.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 120.0, vertical: 10.0),
             child: SizedBox(
               height: 40,
               child: ElevatedButton(
@@ -101,12 +101,12 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen> {
                   //TODO: save to database
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).primaryColor),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    )
-                  ),
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  )),
                 ),
                 child: const Text(
                   'Save',
