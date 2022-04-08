@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/search_customer.dart';
+
 class CustomerListScreen extends StatefulWidget {
-  const CustomerListScreen({ Key? key }) : super(key: key);
+  const CustomerListScreen({Key? key}) : super(key: key);
 
   @override
   State<CustomerListScreen> createState() => _CustomerListScreenState();
@@ -15,10 +17,9 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
         title: const Text('List of Customers'),
         centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          Text('Cristian Mitchel Briceno Rojas'),
-          Text('Pinyada Sengate'),
+      body: ListView(
+        children: const <Widget>[
+          SearchCustomer(),
         ],
       ),
     );

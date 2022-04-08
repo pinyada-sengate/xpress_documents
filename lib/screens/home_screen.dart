@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/recent_customers.dart';
+import '../widgets/search_customer.dart';
 import 'add_customer_screen.dart';
 import 'customer_list_screen.dart';
 
@@ -41,60 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: ListView(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 15.0),
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(
-                          width: 0.8,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: BorderSide(
-                          width: 0.8,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      hintText: 'Search Name and Surname',
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        size: 30.0,
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          //TODO: reset search text
-                        },
-                        icon: const Icon(Icons.clear),
-                      ),
-                    ),
-                  ),
-                ),
-                // const Padding(
-                //   padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-                //   child: Text(
-                //     'Hey Jenny Dorado',
-                //     style: TextStyle(
-                //       fontSize: 24.0,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
-                // const Padding(
-                //   padding: EdgeInsets.only(left: 20.0, bottom: 20.0),
-                //   child: Text(
-                //     'What do you want today?',
-                //     style: TextStyle(
-                //       fontSize: 18.0,
-                //     ),
-                //   ),
-                // ),
+                const SearchCustomer(),
                 const RecentCustomers(),
                 GestureDetector(
                   onTap: () => Navigator.push(
