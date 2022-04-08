@@ -131,7 +131,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
             size: 30.0,
           ),
         ),
-        validator: validateName,
+        validator: validateSurname,
         onSaved: (value) {
           surname = value!;
         },

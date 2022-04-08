@@ -1,9 +1,17 @@
 class ValidationMixin {
+  String patternName = '[a-zA-Z]';
   String? validateName(value) {
-    String pattern = '[a-zA-Z]';
-    RegExp regExp = RegExp(pattern);
+    RegExp regExp = RegExp(patternName);
     if (!regExp.hasMatch(value)) {
-      return 'Please enter a valid name or surname';
+      return 'Please enter a valid name';
+    }
+    return null;
+  }
+
+  String? validateSurname(value) {
+    RegExp regExp = RegExp(patternName);
+    if (!regExp.hasMatch(value)) {
+      return 'Please enter a valid surname';
     }
     return null;
   }
