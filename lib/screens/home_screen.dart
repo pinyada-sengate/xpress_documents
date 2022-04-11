@@ -17,6 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // prepare firebase
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -42,7 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: ListView(
               children: <Widget>[
-                const SearchCustomer(),
+                SearchCustomer(
+                  searchController: _searchController,
+                ),
                 const RecentCustomers(),
                 GestureDetector(
                   onTap: () => Navigator.push(

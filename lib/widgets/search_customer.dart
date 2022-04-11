@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SearchCustomer extends StatelessWidget {
-  const SearchCustomer({Key? key}) : super(key: key);
+  const SearchCustomer({Key? key, required this.searchController})
+      : super(key: key);
+  final TextEditingController searchController;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: TextField(
+        controller: searchController,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -30,12 +33,12 @@ class SearchCustomer extends StatelessWidget {
             Icons.search,
             size: 30.0,
           ),
-          suffixIcon: IconButton(
-            onPressed: () {
-              //TODO: reset search text
-            },
-            icon: const Icon(Icons.clear),
-          ),
+//          suffixIcon: IconButton(
+//            onPressed: () {
+//              //TODO: reset search text
+//            },
+//            icon: const Icon(Icons.clear),
+//          ),
         ),
       ),
     );

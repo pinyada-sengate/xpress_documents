@@ -13,6 +13,67 @@ class CustomerListScreen extends StatefulWidget {
 }
 
 class _CustomerListScreenState extends State<CustomerListScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  late Future customersLoaded;
+  List _allCustomers = [];
+  List _customerSearchList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    customersLoaded = getCustomers();
+  }
+
+  _onSearchChanged() {
+    searchCustomersList();
+    print(_searchController.text);
+  }
+
+  searchCustomersList() {
+    //TODO: check search key from home screen
+    var showResults = [];
+
+    if (_searchController.text != "") {
+      for (var document in _allCustomers) {
+        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+        Customer customer = Customer.fromJson(data);
+        String name =
+            '${customer.name.toLowerCase()} ${customer.surname.toLowerCase()}';
+        if (name.contains(_searchController.text.toLowerCase())) {
+          showResults.add(document);
+        }
+      }
+    } else {
+      showResults = _allCustomers;
+    }
+    setState(() {
+      _customerSearchList = showResults;
+    });
+  }
+
+  getCustomers() async {
+    var data = await FirebaseFirestore.instance.collection('customers').get();
+
+    setState(() {
+      _allCustomers = data.docs;
+    });
+
+    searchCustomersList();
+  }
+
   Widget _buildCustomer(BuildContext context, Customer customer) {
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -131,7 +192,9 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SearchCustomer(),
+          SearchCustomer(
+            searchController: _searchController,
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
@@ -143,7 +206,19 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
               ),
             ),
           ),
-          _buildCustomerList(),
+          //_buildCustomerList(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _customerSearchList.length,
+              itemBuilder: (BuildContext context, int index) {
+                var document = _customerSearchList[index];
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                Customer customer = Customer.fromJson(data);
+                return _buildCustomer(context, customer);
+              },
+            ),
+          ),
         ],
       ),
     );
