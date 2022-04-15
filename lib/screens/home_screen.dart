@@ -19,6 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final TextEditingController _searchController = TextEditingController();
 
+  _onEditingComplete() {
+    print(_searchController.text);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CustomerListScreen(
+          searchKey: _searchController.text,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -46,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
                 SearchCustomer(
                   searchController: _searchController,
+                  onEditingComplete: _onEditingComplete,
                 ),
                 const RecentCustomers(),
                 GestureDetector(

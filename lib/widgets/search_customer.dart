@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SearchCustomer extends StatelessWidget {
-  const SearchCustomer({Key? key, required this.searchController})
+  const SearchCustomer(
+      {Key? key,
+      required this.searchController,
+      required this.onEditingComplete})
       : super(key: key);
   final TextEditingController searchController;
+  final Function onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +15,7 @@ class SearchCustomer extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: TextField(
         controller: searchController,
+        onEditingComplete: () => onEditingComplete(),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -28,7 +33,7 @@ class SearchCustomer extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
           ),
-          hintText: 'Search Name and Surname',
+          hintText: 'Search Name or Surname',
           prefixIcon: const Icon(
             Icons.search,
             size: 30.0,

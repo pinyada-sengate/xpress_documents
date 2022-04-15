@@ -6,7 +6,8 @@ import '../widgets/search_customer.dart';
 import 'customer_screen.dart';
 
 class CustomerListScreen extends StatefulWidget {
-  const CustomerListScreen({Key? key}) : super(key: key);
+  final String searchKey;
+  const CustomerListScreen({Key? key, this.searchKey = ""}) : super(key: key);
 
   @override
   State<CustomerListScreen> createState() => _CustomerListScreenState();
@@ -14,6 +15,7 @@ class CustomerListScreen extends StatefulWidget {
 
 class _CustomerListScreenState extends State<CustomerListScreen> {
   final TextEditingController _searchController = TextEditingController();
+
   late Future customersLoaded;
   List _allCustomers = [];
   List _customerSearchList = [];
@@ -35,6 +37,8 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     customersLoaded = getCustomers();
+    print('customer list : ${widget.searchKey}');
+    _searchController.text = widget.searchKey;
   }
 
   _onSearchChanged() {
@@ -42,8 +46,9 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
     print(_searchController.text);
   }
 
+  _onEditingComplete() {}
+
   searchCustomersList() {
-    //TODO: check search key from home screen
     var showResults = [];
 
     if (_searchController.text != "") {
@@ -194,6 +199,7 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
         children: <Widget>[
           SearchCustomer(
             searchController: _searchController,
+            onEditingComplete: _onEditingComplete,
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
