@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../data/data.dart';
 import '../models/customer.dart';
@@ -14,7 +15,25 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-  List customerCases = currentUser.customerCases;
+  List customerCases = [];
+  late Future customerCasesLoaded;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    customerCasesLoaded = getCustomerCasesByCustomerId();
+  }
+
+  getCustomerCasesByCustomerId() async {
+    var data = await FirebaseFirestore.instance
+        .collection('cases')
+        .where('customerId', isEqualTo: widget.customer.id)
+        .get();
+
+    setState(() {
+      customerCases = data.docs;
+    });
+  }
 
   Widget _buildCustomerCase(BuildContext context, CustomerCase customerCase) {
     return Container(
@@ -82,92 +101,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.customer.name} ${widget.customer.surname}'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            margin:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image(
-                    width: 100,
-                    height: 100,
-                    image: AssetImage(widget.customer.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '${widget.customer.name} ${widget.customer.surname}',
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              phoneNumberField(),
-              emailField(),
-              addressField(),
-              cityField(),
-              stateField(),
-              zipCodeField(),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 20.0),
-                child: Text(
-                  'Cases',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                  ),
-                ),
-              ),
-              Container(
-                height: 150.0,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 10.0),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: customerCases.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    CustomerCase customerCase = customerCases[index];
-                    return _buildCustomerCase(context, customerCase);
-                  },
-                ),
-              ),
-            ],
           ),
         ],
       ),
@@ -384,6 +317,106 @@ class _CustomerScreenState extends State<CustomerScreen> {
               ),
               overflow: TextOverflow.ellipsis,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${widget.customer.name} ${widget.customer.surname}'),
+        centerTitle: true,
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            margin:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Row(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Image(
+                    width: 100,
+                    height: 100,
+                    image: AssetImage(widget.customer.imageUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '${widget.customer.name} ${widget.customer.surname}',
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(
+                          height: 4.0,
+                        ),
+                        Text(
+                          'id: ${widget.customer.id}',
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              phoneNumberField(),
+              emailField(),
+              addressField(),
+              cityField(),
+              stateField(),
+              zipCodeField(),
+              const Padding(
+                padding: EdgeInsets.only(top: 20.0, left: 20.0),
+                child: Text(
+                  'Cases',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ),
+              Container(
+                height: 150.0,
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(left: 10.0),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: customerCases.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var document = customerCases[index];
+                    Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                    CustomerCase customerCase = CustomerCase.fromJson(data);
+                    return _buildCustomerCase(context, customerCase);
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),

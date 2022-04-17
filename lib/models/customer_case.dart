@@ -22,7 +22,7 @@ class CustomerCase {
       customerId: json['customerId'] as String,
       caseType: json['caseType'] as String,
       caseStatus: json['caseStatus'] as String,
-      startDate: json['startDate'] as DateTime,
+      startDate: json['startDate'].toDate() as DateTime,
       price: json['price'] as int,
       paid: json['paid'] as int,
     );

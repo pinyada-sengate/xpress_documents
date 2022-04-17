@@ -37,13 +37,11 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     customersLoaded = getCustomers();
-    print('customer list : ${widget.searchKey}');
     _searchController.text = widget.searchKey;
   }
 
   _onSearchChanged() {
     searchCustomersList();
-    print(_searchController.text);
   }
 
   _onEditingComplete() {}
@@ -221,6 +219,7 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
                 Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
                 Customer customer = Customer.fromJson(data);
+                customer.id = document.id;
                 return _buildCustomer(context, customer);
               },
             ),

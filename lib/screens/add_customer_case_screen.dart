@@ -228,7 +228,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
                 CustomerCase customerCase = CustomerCase(
                   customerId: widget.customer.id ?? '',
                   caseType: caseType,
-                  caseStatus: 'new',
+                  caseStatus: 'New',
                   startDate: now,
                   price: price,
                   paid: paid,
