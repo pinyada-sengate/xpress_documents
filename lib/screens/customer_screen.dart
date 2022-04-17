@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/data.dart';
 import '../models/customer.dart';
 import '../models/customer_case.dart';
+import 'add_customer_case_screen.dart';
 
 class CustomerScreen extends StatefulWidget {
   final Customer customer;
@@ -389,15 +390,48 @@ class _CustomerScreenState extends State<CustomerScreen> {
               cityField(),
               stateField(),
               zipCodeField(),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 20.0),
-                child: Text(
-                  'Cases',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                  ),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, left: 20.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      'Cases',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 10.0),
+                      width: 45.0,
+                      height: 45.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          MaterialPageRoute materialPageRoute =
+                              MaterialPageRoute(
+                            builder: (context) => AddCustomerCaseScreen(
+                              customer: widget.customer,
+                              previousPage: 'CustomerScreen',
+                            ),
+                          );
+                          Navigator.of(context)
+                              .push(materialPageRoute)
+                              .then((value) async {
+                            await getCustomerCasesByCustomerId();
+                          });
+                        },
+                        icon: const Icon(Icons.add),
+                        iconSize: 30.0,
+                        //color: Theme.of(context).primaryColor,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Container(

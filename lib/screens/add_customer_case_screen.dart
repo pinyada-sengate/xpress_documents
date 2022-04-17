@@ -7,8 +7,10 @@ import '../models/customer.dart';
 
 class AddCustomerCaseScreen extends StatefulWidget {
   final Customer customer;
+  final String previousPage;
 
-  const AddCustomerCaseScreen({Key? key, required this.customer})
+  const AddCustomerCaseScreen(
+      {Key? key, required this.customer, required this.previousPage})
       : super(key: key);
 
   @override
@@ -234,13 +236,15 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
                   paid: paid,
                 );
 
-                print(customerCase.customerId);
-
                 await _caseCollection.add(customerCase.toJson());
                 formKey.currentState?.reset();
 
-                Navigator.popUntil(
-                    context, (Route<dynamic> predicate) => predicate.isFirst);
+                if (widget.previousPage == 'CustomerScreen') {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.popUntil(
+                      context, (Route<dynamic> predicate) => predicate.isFirst);
+                }
               }
             },
             style: ButtonStyle(

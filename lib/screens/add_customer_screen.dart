@@ -339,6 +339,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                   MaterialPageRoute(
                       builder: (context) => AddCustomerCaseScreen(
                             customer: customer,
+                            previousPage: 'AddCustomerScreen',
                           )),
                 );
               }
