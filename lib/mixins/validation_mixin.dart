@@ -58,7 +58,7 @@ class ValidationMixin {
     return null;
   }
 
-  String? validateZipcode(value) {
+  String? validateZipCode(value) {
     String pattern = r'^[0-9]{5}(?:-[0-9]{4})?$';
     RegExp regExp = RegExp(pattern);
     if (value.length == 0) {
@@ -76,10 +76,37 @@ class ValidationMixin {
     return null;
   }
 
+  String? validateAlienNumber(value) {
+    String pattern = r'^(\d{7}|\d{8}|\d{9})$';
+    RegExp regExp = RegExp(pattern);
+    if (value.length == 0) {
+      return 'Please enter alien number';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Please enter a valid alien number';
+    }
+    return null;
+  }
+
+  bool _isNumeric(String str) {
+    if (str == null) {
+      return false;
+    }
+    return double.tryParse(str) != null;
+  }
+
   String? validateTotalPrice(value) {
     if (value.length == 0) {
+      return 'Please enter total price';
+    }
+
+    if (!_isNumeric(value)) {
+      return 'Please enter a valid total price';
+    }
+
+    if (double.tryParse(value)! <= 0) {
       return 'Total price must be more than 0';
     }
+
     return null;
   }
 
@@ -87,6 +114,11 @@ class ValidationMixin {
     if (value.length == 0) {
       return 'Please enter down payment';
     }
+
+    if (!_isNumeric(value)) {
+      return 'Please enter a valid down payment';
+    }
+
     return null;
   }
 }

@@ -23,9 +23,17 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
   final CollectionReference _caseCollection =
       FirebaseFirestore.instance.collection('cases');
 
+  final _textDownPayment = TextEditingController();
+
   String caseType = '';
   int price = 0;
   int paid = 0;
+
+  @override
+  void dispose() {
+    _textDownPayment.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +64,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
                     ),
                   ),
                   caseTypeField(),
+                  alienNumberField(),
                   totalPriceField(),
                   downPaymentField(),
                   submitButton(),
@@ -157,6 +166,34 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
     );
   }
 
+  Widget alienNumberField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: TextFormField(
+        keyboardType: TextInputType.name,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 0.8,
+            ),
+          ),
+          hintText: 'Alien Number',
+          prefixIcon: Icon(
+            Icons.perm_identity,
+            size: 30.0,
+          ),
+        ),
+        validator: validateAlienNumber,
+        onSaved: (value) {
+          caseType = value!;
+        },
+      ),
+    );
+  }
+
   Widget totalPriceField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -189,6 +226,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextFormField(
+        controller: _textDownPayment,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
@@ -224,6 +262,11 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
             onPressed: () async {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
+                if (paid > price) {
+                  _textDownPayment.text = price.toString();
+                  paid = price;
+                  return;
+                }
 
                 DateTime now = DateTime.now();
 

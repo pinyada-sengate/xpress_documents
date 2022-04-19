@@ -299,7 +299,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
             size: 30.0,
           ),
         ),
-        validator: validateZipcode,
+        validator: validateZipCode,
         onSaved: (value) {
           zipCode = value!;
         },
