@@ -47,6 +47,7 @@ final currentUser = User(
     CustomerCase(
       customerId: '1',
       caseType: 'Permanent Residence',
+      alienNumber: '1111111',
       caseStatus: 'New',
       startDate: DateTime.now(),
       price: 1000,
@@ -55,6 +56,7 @@ final currentUser = User(
     CustomerCase(
       customerId: '2',
       caseType: 'Permanent Residence',
+      alienNumber: '2222222',
       caseStatus: 'New',
       startDate: DateTime.now(),
       price: 1000,

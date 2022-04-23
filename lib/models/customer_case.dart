@@ -1,6 +1,7 @@
 class CustomerCase {
   final String customerId;
   final String caseType;
+  final String alienNumber;
   final String caseStatus;
   final DateTime startDate;
   final int price;
@@ -10,6 +11,7 @@ class CustomerCase {
   CustomerCase({
     required this.customerId,
     required this.caseType,
+    required this.alienNumber,
     required this.caseStatus,
     required this.startDate,
     this.price = 0,
@@ -21,6 +23,7 @@ class CustomerCase {
     return CustomerCase(
       customerId: json['customerId'] as String,
       caseType: json['caseType'] as String,
+      alienNumber: json['alienNumber'] as String,
       caseStatus: json['caseStatus'] as String,
       startDate: json['startDate'].toDate() as DateTime,
       price: json['price'] as int,
@@ -32,6 +35,7 @@ class CustomerCase {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['customerId'] = customerId;
     data['caseType'] = caseType;
+    data['alienNumber'] = alienNumber;
     data['caseStatus'] = caseStatus;
     data['startDate'] = startDate;
     data['price'] = price;

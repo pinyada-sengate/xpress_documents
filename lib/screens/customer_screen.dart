@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../data/data.dart';
 import '../models/customer.dart';
 import '../models/customer_case.dart';
 import 'add_customer_case_screen.dart';

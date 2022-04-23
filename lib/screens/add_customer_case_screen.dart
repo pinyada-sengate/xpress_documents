@@ -26,6 +26,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
   final _textDownPayment = TextEditingController();
 
   String caseType = '';
+  String alienNumber = '';
   int price = 0;
   int paid = 0;
 
@@ -170,7 +171,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextFormField(
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
           fillColor: Colors.white,
@@ -188,7 +189,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
         ),
         validator: validateAlienNumber,
         onSaved: (value) {
-          caseType = value!;
+          alienNumber = value!;
         },
       ),
     );
@@ -273,6 +274,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
                 CustomerCase customerCase = CustomerCase(
                   customerId: widget.customer.id ?? '',
                   caseType: caseType,
+                  alienNumber: alienNumber,
                   caseStatus: 'New',
                   startDate: now,
                   price: price,
