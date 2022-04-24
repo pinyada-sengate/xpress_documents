@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xpress_documents/widgets/customer_profile_bar.dart';
 
 import '../models/customer.dart';
 import '../models/customer_case.dart';
@@ -36,13 +37,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
     });
   }
 
-  Widget _buildCustomerCase(BuildContext context, CustomerCase customerCase) {
+  Widget _buildCustomerCase(
+      BuildContext context, CustomerCase customerCase, Customer customer) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => EditCustomerCaseScreen(
             customerCase: customerCase,
+            customer: customer,
           ),
         ),
       ),
@@ -343,53 +346,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       ),
       body: ListView(
         children: <Widget>[
-          Container(
-            margin:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image(
-                    width: 100,
-                    height: 100,
-                    image: AssetImage(widget.customer.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '${widget.customer.name} ${widget.customer.surname}',
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(
-                          height: 4.0,
-                        ),
-                        Text(
-                          'id: ${widget.customer.id}',
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          CustomerProfileBar(customer: widget.customer),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -456,7 +413,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
                     CustomerCase customerCase = CustomerCase.fromJson(data);
-                    return _buildCustomerCase(context, customerCase);
+                    return _buildCustomerCase(
+                        context, customerCase, widget.customer);
                   },
                 ),
               ),

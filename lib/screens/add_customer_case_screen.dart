@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../mixins/validation_mixin.dart';
 import '../models/customer_case.dart';
 import '../models/customer.dart';
+import '../widgets/customer_profile_bar.dart';
 
 class AddCustomerCaseScreen extends StatefulWidget {
   final Customer customer;
@@ -45,7 +46,7 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
       ),
       body: ListView(
         children: <Widget>[
-          customerProfile(widget.customer),
+          CustomerProfileBar(customer: widget.customer),
           Container(
             margin: const EdgeInsets.all(20.0),
             child: Form(
