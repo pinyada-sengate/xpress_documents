@@ -7,7 +7,8 @@ class CustomerCase {
   final DateTime startDate;
   final int price;
   final int paid;
-//  final String paidDate;
+  final int lastPayment;
+  final DateTime lastPaymentDate;
 
   CustomerCase({
     this.id,
@@ -18,7 +19,8 @@ class CustomerCase {
     required this.startDate,
     this.price = 0,
     this.paid = 0,
-    //required this.paidDate,
+    this.lastPayment = 0,
+    required this.lastPaymentDate,
   });
 
   factory CustomerCase.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,8 @@ class CustomerCase {
       startDate: json['startDate'].toDate() as DateTime,
       price: json['price'] as int,
       paid: json['paid'] as int,
+      lastPayment: json['lastPayment'] as int,
+      lastPaymentDate: json['lastPaymentDate'].toDate() as DateTime,
     );
   }
 
@@ -42,6 +46,8 @@ class CustomerCase {
     data['startDate'] = startDate;
     data['price'] = price;
     data['paid'] = paid;
+    data['lastPayment'] = lastPayment;
+    data['lastPaymentDate'] = lastPaymentDate;
     return data;
   }
 }

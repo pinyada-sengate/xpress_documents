@@ -84,21 +84,17 @@ class _CustomerCasePaidScreenState extends State<CustomerCasePaidScreen>
 
                 DateTime now = DateTime.now();
 
-//                CustomerCase customerCase = CustomerCase(
-//                  customerId: widget.customer.id ?? '',
-//                  caseType: caseType,
-//                  alienNumber: alienNumber,
-//                  caseStatus: 'New',
-//                  startDate: now,
-//                  price: price,
-//                  paid: paid,
-//                );
-
-                //await _caseCollection.up(customerCase.toJson());
                 int paid = paymentAdded + widget.customerCase.paid;
-                await _caseCollection
-                    .doc(widget.customerCase.id)
-                    .update({'paid': paid});
+                String caseStatus = 'Updated';
+                if (widget.customerCase.price == paid) {
+                  caseStatus = 'Completed';
+                }
+                await _caseCollection.doc(widget.customerCase.id).update({
+                  'paid': paid,
+                  'caseStatus': caseStatus,
+                  'lastPayment': paymentAdded,
+                  'lastPaymentDate': now,
+                });
 
                 formKey.currentState?.reset();
 
@@ -159,7 +155,7 @@ class _CustomerCasePaidScreenState extends State<CustomerCasePaidScreen>
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             child: Text(
-              'Last Payment: \$${widget.customerCase.price}',
+              'Last Payment: \$${widget.customerCase.lastPayment}',
               style: const TextStyle(
                 fontSize: 16.0,
                 //fontWeight: FontWeight.w600,
@@ -170,7 +166,7 @@ class _CustomerCasePaidScreenState extends State<CustomerCasePaidScreen>
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             child: Text(
-              'Last Payment Date: ${getDate(widget.customerCase.startDate)}',
+              'Last Payment Date: ${getDate(widget.customerCase.lastPaymentDate)}',
               style: const TextStyle(
                 fontSize: 16.0,
                 //fontWeight: FontWeight.w600,

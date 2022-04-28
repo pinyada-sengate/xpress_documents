@@ -52,6 +52,8 @@ final currentUser = User(
       startDate: DateTime.now(),
       price: 1000,
       paid: 1000,
+      lastPayment: 1000,
+      lastPaymentDate: DateTime.now(),
     ),
     CustomerCase(
       customerId: '2',
@@ -61,6 +63,8 @@ final currentUser = User(
       startDate: DateTime.now(),
       price: 1000,
       paid: 300,
+      lastPayment: 300,
+      lastPaymentDate: DateTime.now(),
     ),
   ],
 );

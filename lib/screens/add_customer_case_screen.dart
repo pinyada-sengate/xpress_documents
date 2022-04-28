@@ -280,6 +280,8 @@ class _AddCustomerCaseScreenState extends State<AddCustomerCaseScreen>
                   startDate: now,
                   price: price,
                   paid: paid,
+                  lastPayment: paid,
+                  lastPaymentDate: now,
                 );
 
                 await _caseCollection.add(customerCase.toJson());
