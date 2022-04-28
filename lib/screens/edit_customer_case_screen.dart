@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:xpress_documents/mixins/date_time_mixin.dart';
 import 'package:xpress_documents/widgets/customer_profile_bar.dart';
 
@@ -7,10 +8,10 @@ import '../models/customer_case.dart';
 import 'customer_case_paid_screen.dart';
 
 class EditCustomerCaseScreen extends StatefulWidget {
-  final CustomerCase customerCase;
+  late CustomerCase customerCase;
   final Customer customer;
 
-  const EditCustomerCaseScreen(
+  EditCustomerCaseScreen(
       {Key? key, required this.customerCase, required this.customer})
       : super(key: key);
 
@@ -20,6 +21,20 @@ class EditCustomerCaseScreen extends StatefulWidget {
 
 class _EditCustomerCaseScreenState extends State<EditCustomerCaseScreen>
     with DateTimeMixin {
+  final CollectionReference _caseCollection =
+      FirebaseFirestore.instance.collection('cases');
+
+  getCustomerCase(String? id) async {
+    var document = await _caseCollection.doc(id).get();
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+    CustomerCase customerCase = CustomerCase.fromJson(data);
+    customerCase.id = document.id;
+
+    setState(() {
+      widget.customerCase = customerCase;
+    });
+  }
+
   Widget caseTypeField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -202,14 +217,24 @@ class _EditCustomerCaseScreenState extends State<EditCustomerCaseScreen>
 
   Widget paidField() {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
+//      onTap: () => Navigator.push(
+//        context,
+//        MaterialPageRoute(
+//          builder: (context) => CustomerCasePaidScreen(
+//            customerCase: widget.customerCase,
+//          ),
+//        ),
+//      ),
+      onTap: () {
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
           builder: (context) => CustomerCasePaidScreen(
             customerCase: widget.customerCase,
           ),
-        ),
-      ),
+        );
+        Navigator.of(context).push(materialPageRoute).then((value) async {
+          await getCustomerCase(widget.customerCase.id);
+        });
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20.0),
         decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:xpress_documents/mixins/date_time_mixin.dart';
 import 'package:xpress_documents/mixins/validation_mixin.dart';
 
@@ -16,6 +17,9 @@ class CustomerCasePaidScreen extends StatefulWidget {
 class _CustomerCasePaidScreenState extends State<CustomerCasePaidScreen>
     with ValidationMixin, DateTimeMixin {
   final formKey = GlobalKey<FormState>();
+  final CollectionReference _caseCollection =
+      FirebaseFirestore.instance.collection('cases');
+
   int paymentAdded = 0;
 
   Widget paymentField() {
@@ -78,9 +82,8 @@ class _CustomerCasePaidScreenState extends State<CustomerCasePaidScreen>
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
 
-//
-//                DateTime now = DateTime.now();
-//
+                DateTime now = DateTime.now();
+
 //                CustomerCase customerCase = CustomerCase(
 //                  customerId: widget.customer.id ?? '',
 //                  caseType: caseType,
@@ -90,16 +93,16 @@ class _CustomerCasePaidScreenState extends State<CustomerCasePaidScreen>
 //                  price: price,
 //                  paid: paid,
 //                );
-//
-//                await _caseCollection.add(customerCase.toJson());
-//                formKey.currentState?.reset();
-//
-//                if (widget.previousPage == 'CustomerScreen') {
-//                  Navigator.of(context).pop();
-//                } else {
-//                  Navigator.popUntil(
-//                      context, (Route<dynamic> predicate) => predicate.isFirst);
-//                }
+
+                //await _caseCollection.up(customerCase.toJson());
+                int paid = paymentAdded + widget.customerCase.paid;
+                await _caseCollection
+                    .doc(widget.customerCase.id)
+                    .update({'paid': paid});
+
+                formKey.currentState?.reset();
+
+                Navigator.of(context).pop();
               }
             },
             style: ButtonStyle(

@@ -1,4 +1,5 @@
 class CustomerCase {
+  late String? id;
   final String customerId;
   final String caseType;
   final String alienNumber;
@@ -9,6 +10,7 @@ class CustomerCase {
 //  final String paidDate;
 
   CustomerCase({
+    this.id,
     required this.customerId,
     required this.caseType,
     required this.alienNumber,

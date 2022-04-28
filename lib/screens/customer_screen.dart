@@ -413,6 +413,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
                     CustomerCase customerCase = CustomerCase.fromJson(data);
+                    customerCase.id = document.id;
                     return _buildCustomerCase(
                         context, customerCase, widget.customer);
                   },
