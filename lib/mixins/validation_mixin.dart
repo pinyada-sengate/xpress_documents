@@ -87,7 +87,7 @@ class ValidationMixin {
     return null;
   }
 
-  bool _isNumeric(String str) {
+  bool isNumeric(String str) {
     if (str == null) {
       return false;
     }
@@ -99,7 +99,7 @@ class ValidationMixin {
       return 'Please enter total price';
     }
 
-    if (!_isNumeric(value)) {
+    if (!isNumeric(value)) {
       return 'Please enter a valid total price';
     }
 
@@ -115,7 +115,7 @@ class ValidationMixin {
       return 'Please enter down payment';
     }
 
-    if (!_isNumeric(value)) {
+    if (!isNumeric(value)) {
       return 'Please enter a valid down payment';
     }
 

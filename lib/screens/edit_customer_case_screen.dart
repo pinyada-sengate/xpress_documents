@@ -4,6 +4,7 @@ import 'package:xpress_documents/widgets/customer_profile_bar.dart';
 
 import '../models/customer.dart';
 import '../models/customer_case.dart';
+import 'customer_case_paid_screen.dart';
 
 class EditCustomerCaseScreen extends StatefulWidget {
   final CustomerCase customerCase;
@@ -200,44 +201,51 @@ class _EditCustomerCaseScreenState extends State<EditCustomerCaseScreen>
   }
 
   Widget paidField() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20.0),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 1.0,
-            color: Colors.grey.shade200,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CustomerCasePaidScreen(
+            customerCase: widget.customerCase,
           ),
         ),
       ),
-      child: Row(
-        children: [
-          const Text(
-            'Paid : ',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 1.0,
+              color: Colors.grey.shade200,
             ),
-            overflow: TextOverflow.ellipsis,
           ),
-          Expanded(
-            child: Text(
-              widget.customerCase.paid.toString(),
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
+        ),
+        child: Row(
+          children: [
+            const Text(
+              'Paid : ',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
               ),
               overflow: TextOverflow.ellipsis,
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              print("click paid");
-            },
-            icon: const Icon(Icons.navigate_next),
-            iconSize: 30.0,
-          ),
-        ],
+            Expanded(
+              child: Text(
+                widget.customerCase.paid.toString(),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const Icon(
+              Icons.navigate_next,
+              size: 30.0,
+            ),
+          ],
+        ),
       ),
     );
   }
