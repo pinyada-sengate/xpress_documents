@@ -9,14 +9,10 @@ class Customer {
   final String city;
   final String state;
   final String zipCode;
+  final DateTime createdAt;
 
-  //case info
-//  final String caseType;
-//  final String caseStatus;
-//  final String startDate;
   final int price;
   final int paid;
-//  final String paidDate;
 
   Customer({
     this.id,
@@ -29,14 +25,9 @@ class Customer {
     required this.city,
     required this.state,
     required this.zipCode,
-
-    //case info
-//    required this.caseType,
-//    required this.caseStatus,
-//    required this.startDate,
+    required this.createdAt,
     this.price = 0,
     this.paid = 0,
-//    required this.paidDate,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
@@ -50,6 +41,7 @@ class Customer {
       city: json['city'] as String,
       state: json['state'] as String,
       zipCode: json['zipCode'] as String,
+      createdAt: json['createdAt'].toDate() as DateTime,
       price: json['price'] as int,
       paid: json['paid'] as int,
     );
@@ -66,6 +58,7 @@ class Customer {
     data['city'] = city;
     data['state'] = state;
     data['zipCode'] = zipCode;
+    data['createdAt'] = createdAt;
 
     data['price'] = price;
     data['paid'] = paid;

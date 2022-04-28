@@ -1,11 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../data/data.dart';
 import '../models/customer.dart';
 import '../screens/customer_screen.dart';
 
-class RecentCustomers extends StatelessWidget {
-  const RecentCustomers({ Key? key }) : super(key: key);
+class RecentCustomers extends StatefulWidget {
+  const RecentCustomers({Key? key}) : super(key: key);
+
+  @override
+  State<RecentCustomers> createState() => _RecentCustomersState();
+}
+
+class _RecentCustomersState extends State<RecentCustomers> {
+  List _recentCustomers = [];
+  late Future recentCustomersLoaded;
+
+  @override
+  void initState() {
+    super.initState();
+    print("init recent customers");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    recentCustomersLoaded = getRecentCustomers();
+    print('didChangeDependencies recent customers');
+  }
+
+  getRecentCustomers() async {
+    var data = await FirebaseFirestore.instance
+        .collection('customers')
+        .orderBy('createdAt')
+        .limitToLast(2)
+        .get();
+
+    setState(() {
+      _recentCustomers = data.docs;
+    });
+  }
 
   _buildRecentCustomer(BuildContext context, Customer customer) {
     return GestureDetector(
@@ -24,9 +57,9 @@ class RecentCustomers extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.0),
           border: Border.all(
-            width: 1.0, 
+            width: 1.0,
             color: Colors.grey.shade200,
-            ),
+          ),
         ),
         child: Row(
           children: <Widget>[
@@ -54,7 +87,9 @@ class RecentCustomers extends StatelessWidget {
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4.0,),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
                     Text(
                       'Paid: \$${customer.paid.toString()}',
                       style: const TextStyle(
@@ -63,9 +98,12 @@ class RecentCustomers extends StatelessWidget {
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4.0,),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
                     Text(
-                      'Next Payment: \$' + (customer.price - customer.paid).toString(),
+                      'Next Payment: \$' +
+                          (customer.price - customer.paid).toString(),
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600,
@@ -104,9 +142,13 @@ class RecentCustomers extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(left: 10.0),
             scrollDirection: Axis.horizontal,
-            itemCount: currentUser.customers.length,
+            itemCount: _recentCustomers.length,
             itemBuilder: (BuildContext context, int index) {
-              Customer customer = currentUser.customers[index];
+              var document = _recentCustomers[index];
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              Customer customer = Customer.fromJson(data);
+              customer.id = document.id;
               return _buildRecentCustomer(context, customer);
             },
           ),

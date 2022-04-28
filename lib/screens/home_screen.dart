@@ -20,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   _onEditingComplete() {
-    print(_searchController.text);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -60,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   searchController: _searchController,
                   onEditingComplete: _onEditingComplete,
                 ),
-                const RecentCustomers(),
+                RecentCustomers(),
                 GestureDetector(
                   onTap: () => Navigator.push(
                     context,

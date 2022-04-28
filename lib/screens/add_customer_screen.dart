@@ -319,6 +319,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
 
+                DateTime now = DateTime.now();
+
                 Customer customer = Customer(
                   name: name,
                   surname: surname,
@@ -328,6 +330,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen>
                   city: city,
                   state: state,
                   zipCode: zipCode,
+                  createdAt: now,
                 );
 
                 var docRef = await _customerCollection.add(customer.toJson());
