@@ -1,3 +1,5 @@
+import 'package:xpress_documents/models/customer_case.dart';
+
 class Customer {
   late String? id;
   final String name;
@@ -13,6 +15,7 @@ class Customer {
 
   final int price;
   final int paid;
+  late List<CustomerCase> customerCases;
 
   Customer({
     this.id,
@@ -28,6 +31,7 @@ class Customer {
     required this.createdAt,
     this.price = 0,
     this.paid = 0,
+    this.customerCases = const [],
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/customer.dart';
+import '../models/customer_case.dart';
 import '../screens/customer_screen.dart';
 
 class RecentCustomers extends StatefulWidget {
@@ -12,7 +13,7 @@ class RecentCustomers extends StatefulWidget {
 }
 
 class _RecentCustomersState extends State<RecentCustomers> {
-  List _recentCustomers = [];
+  List<Customer> _recentCustomers = [];
   late Future recentCustomersLoaded;
 
   @override
@@ -33,12 +34,55 @@ class _RecentCustomersState extends State<RecentCustomers> {
         .limit(3)
         .get();
 
+    var documents = data.docs;
+    List<Customer> customers = [];
+    for (int i = 0; i < documents.length; i++) {
+      var document = documents[i];
+      Map<String, dynamic> data = document.data();
+      Customer customer = Customer.fromJson(data);
+      var id = document.id;
+      customer.id = id;
+
+      List<CustomerCase> customerCases = await getCustomerCasesByCustomerId(id);
+      customer.customerCases = customerCases;
+      customers.add(customer);
+    }
+
     setState(() {
-      _recentCustomers = data.docs;
+      _recentCustomers = customers;
     });
   }
 
+  Future<List<CustomerCase>> getCustomerCasesByCustomerId(String id) async {
+    var data = await FirebaseFirestore.instance
+        .collection('cases')
+        .where('customerId', isEqualTo: id)
+        .get();
+
+    var documents = data.docs;
+    List<CustomerCase> customerCases = [];
+    for (var i = 0; i < documents.length; i++) {
+      var document = documents[i];
+      Map<String, dynamic> data = document.data();
+      CustomerCase customerCase = CustomerCase.fromJson(data);
+      customerCase.id = document.id;
+      customerCases.add(customerCase);
+    }
+
+    return customerCases;
+  }
+
   _buildRecentCustomer(BuildContext context, Customer customer) {
+    int totalPrice = 0;
+    int totalPaid = 0;
+    var customerCases = customer.customerCases;
+
+    for (var i = 0; i < customerCases.length; i++) {
+      CustomerCase customerCase = customerCases[i];
+      totalPrice += customerCase.price;
+      totalPaid += customerCase.paid;
+    }
+
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -89,7 +133,7 @@ class _RecentCustomersState extends State<RecentCustomers> {
                       height: 4.0,
                     ),
                     Text(
-                      'Paid: \$${customer.paid.toString()}',
+                      'Paid: \$${totalPaid.toString()}',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600,
@@ -100,8 +144,7 @@ class _RecentCustomersState extends State<RecentCustomers> {
                       height: 4.0,
                     ),
                     Text(
-                      'Next Payment: \$' +
-                          (customer.price - customer.paid).toString(),
+                      'Next Payment: \$' + (totalPrice - totalPaid).toString(),
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600,
@@ -142,11 +185,7 @@ class _RecentCustomersState extends State<RecentCustomers> {
             scrollDirection: Axis.horizontal,
             itemCount: _recentCustomers.length,
             itemBuilder: (BuildContext context, int index) {
-              var document = _recentCustomers[index];
-              Map<String, dynamic> data =
-                  document.data()! as Map<String, dynamic>;
-              Customer customer = Customer.fromJson(data);
-              customer.id = document.id;
+              Customer customer = _recentCustomers[index];
               return _buildRecentCustomer(context, customer);
             },
           ),
