@@ -217,14 +217,6 @@ class _EditCustomerCaseScreenState extends State<EditCustomerCaseScreen>
 
   Widget paidField() {
     return GestureDetector(
-//      onTap: () => Navigator.push(
-//        context,
-//        MaterialPageRoute(
-//          builder: (context) => CustomerCasePaidScreen(
-//            customerCase: widget.customerCase,
-//          ),
-//        ),
-//      ),
       onTap: () {
         MaterialPageRoute materialPageRoute = MaterialPageRoute(
           builder: (context) => CustomerCasePaidScreen(
@@ -281,6 +273,17 @@ class _EditCustomerCaseScreenState extends State<EditCustomerCaseScreen>
       appBar: AppBar(
         title: Text('Case Type ${widget.customerCase.caseType}'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () async {
+              await _caseCollection.doc(widget.customerCase.id).delete();
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.delete),
+            iconSize: 30.0,
+            color: Colors.white,
+          ),
+        ],
       ),
       body: ListView(
         children: <Widget>[
