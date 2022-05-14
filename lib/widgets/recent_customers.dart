@@ -18,21 +18,19 @@ class _RecentCustomersState extends State<RecentCustomers> {
   @override
   void initState() {
     super.initState();
-    print("init recent customers");
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     recentCustomersLoaded = getRecentCustomers();
-    print('didChangeDependencies recent customers');
   }
 
   getRecentCustomers() async {
     var data = await FirebaseFirestore.instance
         .collection('customers')
-        .orderBy('createdAt')
-        .limitToLast(2)
+        .orderBy('createdAt', descending: true)
+        .limit(3)
         .get();
 
     setState(() {
