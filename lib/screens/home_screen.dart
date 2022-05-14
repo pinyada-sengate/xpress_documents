@@ -50,6 +50,19 @@ class _HomeScreenState extends State<HomeScreen> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
             appBar: AppBar(
+              leading: CircleAvatar(
+                radius: 16.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: const Image(
+                    image: AssetImage(
+                      'assets/images/logo.jpg',
+                    ),
+                    width: 40.0,
+                    height: 40.0,
+                  ),
+                ),
+              ),
               title: const Text('Xpress Documents'),
               centerTitle: true,
             ),
