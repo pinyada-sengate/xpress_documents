@@ -40,15 +40,17 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget _buildCustomerCase(
       BuildContext context, CustomerCase customerCase, Customer customer) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => EditCustomerCaseScreen(
+      onTap: () {
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+          builder: (context) => EditCustomerCaseScreen(
             customerCase: customerCase,
             customer: customer,
           ),
-        ),
-      ),
+        );
+        Navigator.of(context).push(materialPageRoute).then((value) async {
+          await getCustomerCasesByCustomerId();
+        });
+      },
       child: Container(
         margin: const EdgeInsets.all(10.0),
         width: 320.0,
